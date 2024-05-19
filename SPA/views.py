@@ -1,6 +1,8 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from SPA.models import Habit
+from SPA.permissions import ReadOnly, IsCreator
 from SPA.serializers import HabitSerializer
 
 
@@ -21,19 +23,23 @@ class HabitUserListAPIView(generics.ListAPIView):
 
 
 class HabitPublishedListAPIView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated & ReadOnly]
     serializer_class = HabitSerializer
     queryset = Habit.objects.filter(is_published=True)
 
 
 class HabitRetrieveAPIView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated & IsCreator]
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
 
 
 class HabitUpdateAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated & IsCreator]
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
 
 
 class HabitDestroyAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated & IsCreator]
     queryset = Habit.objects.all()

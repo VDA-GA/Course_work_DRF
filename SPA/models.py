@@ -16,7 +16,7 @@ class Habit(models.Model):
                                     verbose_name='Периодичность')
     linked_habit = models.ForeignKey('self', on_delete=models.CASCADE, verbose_name='Связанная привычка')
     reward = models.CharField(max_length=300, verbose_name='Вознаграждение')
-    action_time = models.IntegerField(help_text='Укажите время на выполнение привычки в минутах',
+    action_time = models.IntegerField(help_text='Укажите время на выполнение привычки в секундах',
                                       verbose_name='Время на выполнение')
     is_published = models.BooleanField(default=False, help_text='Привычку опубликовать?',
                                        verbose_name='Признак публикации')
