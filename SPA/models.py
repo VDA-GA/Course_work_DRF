@@ -20,3 +20,11 @@ class Habit(models.Model):
                                       verbose_name='Время на выполнение')
     is_published = models.BooleanField(default=False, help_text='Привычку опубликовать?',
                                        verbose_name='Признак публикации')
+
+    def __str__(self):
+        return f"Я {self.user} буду {self.action} в {self.time} в {self.place}"
+
+    class Meta:
+        verbose_name = "привычка"
+        verbose_name_plural = "привычки"
+
