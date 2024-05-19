@@ -19,7 +19,7 @@ class HabitUserListAPIView(generics.ListAPIView):
     serializer_class = HabitSerializer
 
     def get_queryset(self):
-        return Habit.objects.filter(creator=self.request.user)
+        return Habit.objects.filter(user=self.request.user)
 
 
 class HabitPublishedListAPIView(generics.ListAPIView):
