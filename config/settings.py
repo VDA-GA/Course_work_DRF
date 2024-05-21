@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "corsheaders",
+    'django_celery_beat',
     "SPA.apps.SpaConfig",
     "user.apps.UserConfig",
 ]
@@ -151,8 +152,9 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOWED_ORIGINS = [
-    '<http://localhost:8000>',  # Замените на адрес вашего фронтенд-сервера
+CORS_ALLOWED_ORIGINS = ["https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -161,3 +163,21 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+CELERY_BEAT_SCHEDULE = {
+    "task-name": {
+        "task": "users.tasks.user_blocking",
+        "schedule": timedelta(minutes=1),
+    },
+}
