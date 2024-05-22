@@ -10,32 +10,61 @@ class HabitTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create(email="testor@mail.ru")
         self.client.force_authenticate(user=self.user)
-        self.habit_1 = Habit.objects.create(action='TestHabit1', user=self.user, place='TestPlace',
-                                            time="2024-05-22T00:00:00Z", is_pleasant=True, frequency=1, action_time=100)
-        self.habit_2 = Habit.objects.create(action='TestHabit2', user=self.user, place='TestPlace',
-                                            time="2024-05-22T15:00:00Z", is_pleasant=False, linked_habit=self.habit_1,
-                                            frequency=1,
-                                            action_time=100, is_published=True)
+        self.habit_1 = Habit.objects.create(
+            action="TestHabit1",
+            user=self.user,
+            place="TestPlace",
+            time="2024-05-22T00:00:00Z",
+            is_pleasant=True,
+            frequency=1,
+            action_time=100,
+        )
+        self.habit_2 = Habit.objects.create(
+            action="TestHabit2",
+            user=self.user,
+            place="TestPlace",
+            time="2024-05-22T15:00:00Z",
+            is_pleasant=False,
+            linked_habit=self.habit_1,
+            frequency=1,
+            action_time=100,
+            is_published=True,
+        )
 
     def test_habit_retrieve(self):
         url = reverse("SPA:habit_detail", args=(self.habit_2.pk,))
         response = self.client.get(url)
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(data.get('action'), self.habit_2.action)
+        self.assertEqual(data.get("action"), self.habit_2.action)
 
     def test_habit_create_1(self):
         url = reverse("SPA:create_habit")
-        data = {"action": "TestHabit3", "place": "TestPlace2", "time": "2024-05-22T15:00:00Z",
-                "is_pleasant": "false", "frequency": 1, "action_time": 100, "is_published": "true"}
+        data = {
+            "action": "TestHabit3",
+            "place": "TestPlace2",
+            "time": "2024-05-22T15:00:00Z",
+            "is_pleasant": "false",
+            "frequency": 1,
+            "action_time": 100,
+            "is_published": "true",
+        }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Habit.objects.all().count(), 3)
 
     def test_habit_create_2(self):
         url = reverse("SPA:create_habit")
-        data = {"action": "TestHabit3", "place": "TestPlace2", "time": "2024-05-22T15:00:00Z",
-                "is_pleasant": "true", "reward": "reward", "frequency": 1, "action_time": 100, "is_published": "true"}
+        data = {
+            "action": "TestHabit3",
+            "place": "TestPlace2",
+            "time": "2024-05-22T15:00:00Z",
+            "is_pleasant": "true",
+            "reward": "reward",
+            "frequency": 1,
+            "action_time": 100,
+            "is_published": "true",
+        }
         response = self.client.post(url, data)
         result = list(response.json().values())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -43,8 +72,15 @@ class HabitTestCase(APITestCase):
 
     def test_habit_create_3(self):
         url = reverse("SPA:create_habit")
-        data = {"action": "TestHabit3", "place": "TestPlace2", "time": "2024-05-22T15:00:00Z",
-                "is_pleasant": "true", "linked_habit": self.habit_1.pk, "frequency": 1, "action_time": 100}
+        data = {
+            "action": "TestHabit3",
+            "place": "TestPlace2",
+            "time": "2024-05-22T15:00:00Z",
+            "is_pleasant": "true",
+            "linked_habit": self.habit_1.pk,
+            "frequency": 1,
+            "action_time": 100,
+        }
         response = self.client.post(url, data)
         result = list(response.json().values())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -52,9 +88,16 @@ class HabitTestCase(APITestCase):
 
     def test_habit_create_4(self):
         url = reverse("SPA:create_habit")
-        data = {"action": "TestHabit3", "place": "TestPlace2", "time": "2024-05-22T15:00:00Z",
-                "is_pleasant": "false", "linked_habit": self.habit_1.pk, "reward": "reward", "frequency": 1,
-                "action_time": 100}
+        data = {
+            "action": "TestHabit3",
+            "place": "TestPlace2",
+            "time": "2024-05-22T15:00:00Z",
+            "is_pleasant": "false",
+            "linked_habit": self.habit_1.pk,
+            "reward": "reward",
+            "frequency": 1,
+            "action_time": 100,
+        }
         response = self.client.post(url, data)
         result = list(response.json().values())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -62,8 +105,14 @@ class HabitTestCase(APITestCase):
 
     def test_habit_create_5(self):
         url = reverse("SPA:create_habit")
-        data = {"action": "TestHabit3", "place": "TestPlace2", "time": "2024-05-22T15:00:00Z",
-                "is_pleasant": "false", "frequency": 10, "action_time": 100}
+        data = {
+            "action": "TestHabit3",
+            "place": "TestPlace2",
+            "time": "2024-05-22T15:00:00Z",
+            "is_pleasant": "false",
+            "frequency": 10,
+            "action_time": 100,
+        }
         response = self.client.post(url, data)
         result = list(response.json().values())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -71,8 +120,14 @@ class HabitTestCase(APITestCase):
 
     def test_habit_create_6(self):
         url = reverse("SPA:create_habit")
-        data = {"action": "TestHabit3", "place": "TestPlace2", "time": "2024-05-22T15:00:00Z",
-                "is_pleasant": "false", "frequency": 7, "action_time": 200}
+        data = {
+            "action": "TestHabit3",
+            "place": "TestPlace2",
+            "time": "2024-05-22T15:00:00Z",
+            "is_pleasant": "false",
+            "frequency": 7,
+            "action_time": 200,
+        }
         response = self.client.post(url, data)
         result = list(response.json().values())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -80,8 +135,13 @@ class HabitTestCase(APITestCase):
 
     def test_habit_update(self):
         url = reverse("SPA:habit_update", args=(self.habit_2.pk,))
-        data = {"action": "NEWTestHabit", "place": "NEWPlace", "time": "2024-05-22T15:00:00Z",
-                "frequency": 7, "action_time": 20}
+        data = {
+            "action": "NEWTestHabit",
+            "place": "NEWPlace",
+            "time": "2024-05-22T15:00:00Z",
+            "frequency": 7,
+            "action_time": 20,
+        }
         response = self.client.put(url, data)
         result = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -111,7 +171,7 @@ class HabitTestCase(APITestCase):
             "linked_habit": self.habit_1.linked_habit,
             "reward": self.habit_1.reward,
             "action_time": self.habit_1.action_time,
-            "is_published": self.habit_1.is_published
+            "is_published": self.habit_1.is_published,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data[0], result)
@@ -134,7 +194,7 @@ class HabitTestCase(APITestCase):
             "linked_habit": self.habit_1.pk,
             "reward": self.habit_2.reward,
             "action_time": self.habit_2.action_time,
-            "is_published": self.habit_2.is_published
+            "is_published": self.habit_2.is_published,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data[0], result)

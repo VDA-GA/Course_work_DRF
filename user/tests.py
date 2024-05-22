@@ -15,7 +15,7 @@ class UserTestCase(APITestCase):
         response = self.client.get(url)
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(data.get('email'), self.user.email)
+        self.assertEqual(data.get("email"), self.user.email)
 
     def test_user_create(self):
         url = reverse("user:user_register")
