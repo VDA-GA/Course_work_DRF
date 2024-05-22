@@ -23,13 +23,13 @@ class HabitSerializer(serializers.ModelSerializer):
         validators = []
 
     def validate(self, data):
-        if data["is_pleasant"]:
-            if data["reward"]:
+        if data.get("is_pleasant"):
+            if data.get("reward"):
                 raise serializers.ValidationError("Приятная привычка не может иметь вознаграждение")
-            elif data["linked_habit"]:
+            elif data.get("linked_habit"):
                 raise serializers.ValidationError("Приятная привычка не может иметь связанную привычку")
         else:
-            if data.get("reward") and data.get("linked_habit"):
+            if data.get("reward") is not None and data.get("linked_habit") is not None:
                 raise serializers.ValidationError(
                     "Невозможно одновременно выбрать связанную привычку и вознаграждение"
                 )
@@ -46,6 +46,7 @@ class HabitSerializer(serializers.ModelSerializer):
         return value
 
     def validate_linked_habit(self, value):
-        if value["is_pleasant"] is False:
-            raise serializers.ValidationError("Нельзя выполнять привычку реже, чем 1 раз в 7 дней.")
-        return value
+        if value:
+            if value.is_pleasant is False:
+                raise serializers.ValidationError("Связанная привычка может быть только приятной")
+            return value

@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from SPA.models import Habit
 from SPA.pagination import HabitPagination
-from SPA.permissions import ReadOnly, IsCreator
+from SPA.permissions import IsCreator, ReadOnly
 from SPA.serializers import HabitSerializer
 
 

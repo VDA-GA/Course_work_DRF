@@ -1,8 +1,5 @@
-from django.db import models
-
 from django.conf import settings
-
-from django.utils import timezone
+from django.db import models
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -13,7 +10,7 @@ class Habit(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name="Пользователь"
     )
     place = models.CharField(max_length=250, help_text="Где выполнять привычку?", verbose_name="Место")
-    time = models.DateTimeField(help_text="В какое время выполнять привычку?", default=timezone.now, verbose_name="Время выполнения")
+    time = models.DateTimeField(help_text="В какое время выполнять привычку?", verbose_name="Время выполнения")
     is_pleasant = models.BooleanField(
         default=False, help_text="Это приятная привычка?", verbose_name="Признак приятной привычки"
     )

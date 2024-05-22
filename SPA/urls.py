@@ -1,14 +1,8 @@
 from django.urls import path
 
 from SPA.apps import SpaConfig
-from SPA.views import (
-    HabitCreateAPIView,
-    HabitRetrieveAPIView,
-    HabitUpdateAPIView,
-    HabitDestroyAPIView,
-    HabitPublishedListAPIView,
-    HabitUserListAPIView,
-)
+from SPA.views import (HabitCreateAPIView, HabitDestroyAPIView, HabitPublishedListAPIView, HabitRetrieveAPIView,
+                       HabitUpdateAPIView, HabitUserListAPIView)
 
 app_name = SpaConfig.name
 
