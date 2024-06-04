@@ -23,13 +23,14 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="API Documentation",
+        title="Course_work_DRF",
         default_version="v1",
         description="Your API description",
         terms_of_service="https://www.example.com/policies/terms/",
-        contact=openapi.Contact(email="contact@example.com"),
+        contact=openapi.Contact(email="VDA_GA@yandex.ru"),
         license=openapi.License(name="BSD License"),
     ),
+    url="http://localhost/",
     public=True,
     permission_classes=(permissions.AllowAny,),
 )

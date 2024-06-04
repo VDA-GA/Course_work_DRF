@@ -152,8 +152,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
     "https://example.com",
     "https://sub.example.com",
     "http://localhost:8080",
@@ -164,6 +164,8 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_ALLOW_CREDENTIALS = True
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
@@ -181,4 +183,8 @@ CELERY_BEAT_SCHEDULE = {
         "task": "SPA.tasks.send_tg_message_to_user",
         "schedule": timedelta(minutes=1),
     },
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False
 }
